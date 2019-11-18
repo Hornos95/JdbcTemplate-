@@ -13,6 +13,12 @@ public class Main {
         houses = service.getAll();
         System.out.println(houses);
 
+        System.out.println("-----------------");
+
+        service.insert(3500000, 3, "Вахитовский","Площадь Тукая");
+        houses=service.getAll();
+        System.out.println(houses);
+
 
     }
 }

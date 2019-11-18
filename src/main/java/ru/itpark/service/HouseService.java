@@ -8,6 +8,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class HouseService {
     public HouseService() {
     }
@@ -25,6 +27,38 @@ public class HouseService {
                         resultSet.getString("underground")
                 )
         );
+    }
+    public void insert(int price, int rooms, String district, String underground) throws SQLException {
+        JdbcTemplate.executeUpdate("jdbc:sqlite:db.sqlite",
+                "INSERT INTO house(price, rooms, district, underground) values(?,?,?,?)",
+                statement -> {
+                    statement.setInt(1,price);
+                    statement.setInt(2,rooms);
+                    statement.setString(3,district);
+                    statement.setString(4,underground);
+                });
+    }
+
+
+    public void update(int id, int price, int rooms, String district, String underground) throws SQLException {
+        JdbcTemplate.executeUpdate("jdbc:sqlite:db.sqlite",
+                "UPDATE house SET price = ?, rooms = ?, district = ?, underground = ? where id = ?",
+                statement -> {
+                    statement.setInt(1,price);
+                    statement.setInt(2,rooms);
+                    statement.setString(3,district);
+                    statement.setString(4,underground);
+                    statement.setInt(5,id);
+                });
+    }
+
+
+    public void delete(int id) throws SQLException {
+        JdbcTemplate.executeUpdate("jdbc:sqlite:db.sqlite",
+                "DELETE FROM house where id = ?",
+                statement -> {
+                    statement.setInt(1,id);
+                });
     }
 
 
@@ -51,7 +85,7 @@ public class HouseService {
         }
         return result;
     }
-    public List<House> searchByUndeground(String metro) throws SQLException {
+    public List<House> searchByUnderground(String metro) throws SQLException {
         List<House> houses = getAll();
         List<House> result = new ArrayList<>();
         for (House house : houses) {
